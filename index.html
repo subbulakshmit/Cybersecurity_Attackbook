@@ -20,29 +20,123 @@
           <path d="M9 12l2 2 4-4"/>
         </svg>
       </div>
-      <div>
+      <div class="brand-text-block">
         <h1 class="brand-title">CYBER ATTACK BOOK</h1>
-        <span class="brand-subtitle">68 Threat Vectors: Network • Core OS • App • Password • Wireless • Rogue AP • MAC • Mobile • IoT • Windows • Linux • macOS • Specialized</span>
+        <span class="brand-subtitle">Enterprise Threat Intelligence &amp; SOC Defense Console</span>
       </div>
     </div>
 
-    <div class="nav-metrics">
-      <div class="metric-pill live-indicator">
-        <span class="pulse-dot"></span>
-        <span>DEFCON LEVEL 2</span>
+    <!-- Central Mode Switcher -->
+    <div class="mode-switch-wrapper" role="tablist" aria-label="Operating Mode Selection">
+      <button class="mode-toggle-btn active" id="btn-mode-learning" role="tab" aria-selected="true" data-mode="learning">
+        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+        </svg>
+        <span>Learning</span>
+        <span class="mode-badge-count" id="mode-learning-count">95 Vectors</span>
+      </button>
+      <button class="mode-toggle-btn" id="btn-mode-assessment" role="tab" aria-selected="false" data-mode="assessment">
+        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <polyline points="12 8 12 12 15 15"/>
+        </svg>
+        <span>Assessment</span>
+        <span class="mode-badge-action" id="mode-assessment-count">10 Scenarios</span>
+      </button>
+      <button class="mode-toggle-btn" id="btn-mode-glossary" role="tab" aria-selected="false" data-mode="glossary">
+        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+        </svg>
+        <span>Glossary</span>
+        <span class="mode-badge-count" id="glossary-term-badge">123 Terms</span>
+      </button>
+      <button class="mode-toggle-btn" id="btn-mode-quiz" role="tab" aria-selected="false" data-mode="quiz">
+        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+        <span>MCQ Quiz</span>
+        <span class="mode-badge-action" id="mode-quiz-count">10 MCQs</span>
+      </button>
+    </div>
+
+    <!-- Right-Hand Threat Search & Command Controls -->
+    <div class="nav-right-section">
+      <!-- Universal Attack Search Bar on right side after title bar -->
+      <div class="nav-search-bar" id="nav-search-wrapper">
+        <svg class="nav-search-icon" viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="top-search-input" placeholder="Search 95 vectors (SSRF, SQLi, T1190)..." autocomplete="off" spellcheck="false">
+        <button id="top-clear-search-btn" class="nav-clear-btn" aria-label="Clear Search" style="display: none;">&times;</button>
+        <span class="nav-search-shortcut" title="Press / to focus">/</span>
       </div>
-      <div class="metric-pill">
-        <span class="metric-label">VECTORS:</span>
-        <span class="metric-val" id="total-attacks-count">68</span>
+
+      <!-- Mode-Specific Quick Metrics (Neat & Clean) -->
+      <div class="nav-metrics" id="learning-metrics">
+        <div class="metric-pill live-indicator">
+          <span class="pulse-dot"></span>
+          <span>DEFCON 2</span>
+        </div>
+        <div class="metric-pill">
+          <span class="metric-label">VECTORS:</span>
+          <span class="metric-val highlight" id="total-attacks-count">95</span>
+        </div>
+        <div class="metric-pill">
+          <span class="metric-label">READINESS:</span>
+          <span class="metric-val highlight" id="global-readiness-val">0%</span>
+        </div>
       </div>
-      <div class="metric-pill">
-        <span class="metric-label">DEFENSE READINESS:</span>
-        <span class="metric-val highlight" id="global-readiness-val">0%</span>
+
+      <!-- Assessment Mode Top Metrics -->
+      <div class="nav-metrics" id="assessment-metrics" style="display: none;">
+        <button class="nav-portfolio-btn" id="btn-nav-portfolio-scorecard" title="Open Enterprise Defense Portfolio Audit">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+          </svg>
+          <span>Portfolio Audit</span>
+        </button>
+        <div class="metric-pill">
+          <span class="metric-label">SCENARIO:</span>
+          <span class="metric-val highlight" id="nav-assessment-remaining-budget">$120,000</span>
+        </div>
+        <div class="metric-pill">
+          <span class="metric-label">ENTERPRISE:</span>
+          <span class="metric-val highlight" id="nav-portfolio-score-pill">0/100</span>
+        </div>
+      </div>
+
+      <!-- Glossary Mode Top Metrics -->
+      <div class="nav-metrics" id="glossary-metrics" style="display: none;">
+        <div class="metric-pill">
+          <span class="metric-label">TERMS:</span>
+          <span class="metric-val highlight" id="glossary-term-count">123 Terms</span>
+        </div>
+      </div>
+
+      <!-- Quiz Mode Top Metrics -->
+      <div class="nav-metrics" id="quiz-metrics" style="display: none;">
+        <div class="metric-pill">
+          <span class="metric-label">CATEGORY:</span>
+          <span class="metric-val highlight" id="nav-quiz-category-label">All Vectors</span>
+        </div>
+        <div class="metric-pill">
+          <span class="metric-label">SCORE:</span>
+          <span class="metric-val highlight" id="nav-quiz-score-pill">0 / 10</span>
+        </div>
       </div>
     </div>
   </header>
 
-  <div class="main-layout">
+  <!-- ========================================================================= -->
+  <!-- 1. LEARNING MODE LAYOUT (Present Threat Vectors & Dossiers)               -->
+  <!-- ========================================================================= -->
+  <div class="main-layout" id="learning-layout">
     <!-- Sidebar: Attack Directory & Filters -->
     <aside class="sidebar" id="sidebar">
       <div class="search-box">
@@ -50,12 +144,16 @@
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-        <input type="text" id="search-input" placeholder="Search 68 attacks (name, MITRE, target)..." autocomplete="off">
+        <input type="text" id="search-input" placeholder="Filter 95 attacks (name, MITRE, target)..." autocomplete="off">
         <button id="clear-search-btn" class="clear-btn" aria-label="Clear Search">&times;</button>
       </div>
 
       <div class="filter-pills">
-        <button class="filter-pill active" data-filter="all">All (68)</button>
+        <button class="filter-pill active" data-filter="all">All (95)</button>
+        <button class="filter-pill" data-filter="owasp">OWASP Top 10 (84–93)</button>
+        <button class="filter-pill" data-filter="other-web">Other Web (94–100)</button>
+        <button class="filter-pill" data-filter="database">Database (101–105)</button>
+        <button class="filter-pill" data-filter="storage">Storage Security (106–110)</button>
         <button class="filter-pill" data-filter="network">Network (01–05)</button>
         <button class="filter-pill" data-filter="os">Core OS (06–10)</button>
         <button class="filter-pill" data-filter="app">App / Web (11–15)</button>
@@ -82,7 +180,7 @@
             <circle cx="12" cy="12" r="10"></circle>
             <path d="M12 6v6l4 2"></path>
           </svg>
-          <span>68 Threat Vectors Loaded</span>
+          <span>95 Threat Vectors Loaded</span>
         </div>
       </div>
     </aside>
@@ -125,6 +223,201 @@
     </main>
   </div>
 
+  <!-- ========================================================================= -->
+  <!-- 2. ASSESSMENT MODE LAYOUT (Scenarios, Cost-to-Defend & Mitigations)       -->
+  <!-- ========================================================================= -->
+  <div class="assessment-layout" id="assessment-layout" style="display: none;">
+    <!-- Left Sidebar: Scenarios Directory -->
+    <aside class="sc-sidebar" id="sc-sidebar">
+      <div class="sc-sidebar-header">
+        <div class="sc-sidebar-title-row">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+          </svg>
+          <span>DEFENSE SCENARIOS</span>
+        </div>
+        <span class="sc-sidebar-subtitle">Operational Incident Assessments</span>
+      </div>
+
+      <div class="sc-scenario-list" id="scenario-list-container" role="navigation" aria-label="Scenarios List">
+        <!-- Populated via assessment.js -->
+      </div>
+
+      <div class="sc-sidebar-footer">
+        <div class="compliance-badge">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 6v6l4 2"></path>
+          </svg>
+          <span>Cost-to-Defend Engine v1.0</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right Panel: Scenario Assessment Workspace -->
+    <main class="sc-content-panel" id="assessment-main-content">
+      <!-- 0. Overall Enterprise Portfolio Command Bar (Global Across All Scenarios) -->
+      <section class="enterprise-portfolio-summary-bar" id="enterprise-portfolio-summary">
+        <!-- Populated via assessment.js -->
+      </section>
+
+      <!-- 1. Scenario Active Dossier Header -->
+      <section class="sc-dossier-header" id="scenario-dossier-header">
+        <!-- Populated via assessment.js -->
+      </section>
+
+      <!-- 2. Financial Command Bar -->
+      <section class="financial-command-bar-wrapper" id="financial-command-bar">
+        <!-- Populated via assessment.js -->
+      </section>
+
+      <!-- 3. Simulation Radar HUD -->
+      <section class="sim-radar-hud-card" id="simulation-radar-hud" style="display: none;">
+        <div class="sim-radar-header">
+          <div class="sim-radar-status">
+            <span class="radar-pulse-dot"></span>
+            <span id="sim-hud-stage-title">STAGE 1: ADVERSARY RECON & PROBING</span>
+          </div>
+          <span class="sim-hud-note">Coordinated Adversary Kill Chain Execution</span>
+        </div>
+        <p class="sim-radar-detail" id="sim-hud-stage-detail">Mass port scanning and BGP route flapping initiated.</p>
+        <div class="sim-hud-progress-track">
+          <div class="sim-hud-progress-fill" id="sim-hud-progress-fill" style="width: 25%;"></div>
+        </div>
+      </section>
+
+      <!-- 4. Two-Column Matrix: Attacks & Defenses with Cost -->
+      <div class="sc-matrix-grid">
+        <!-- Left Column: Active Attacks in Scenario -->
+        <section class="sc-matrix-column attacks-column" id="attacks-column-container">
+          <!-- Populated via assessment.js -->
+        </section>
+
+        <!-- Right Column: Defense Countermeasures with Cost -->
+        <section class="sc-matrix-column defenses-column" id="defenses-column-container">
+          <!-- Populated via assessment.js -->
+        </section>
+      </div>
+
+      <!-- 5. Real-Time SOC Incident Telemetry Terminal -->
+      <section class="telemetry-terminal-card">
+        <div class="telemetry-header">
+          <div class="telemetry-title">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2">
+              <polyline points="4 17 10 11 4 5"></polyline>
+              <line x1="12" y1="19" x2="20" y2="19"></line>
+            </svg>
+            <span>LIVE SOC INCIDENT TELEMETRY FEED</span>
+          </div>
+          <span class="telemetry-badge">REAL-TIME TELEMETRY BUS</span>
+        </div>
+        <div class="telemetry-stream" id="telemetry-log-stream">
+          <!-- Streamed logs populated via assessment.js -->
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 3. GLOSSARY SECTION (Alphabetical A–Z Cyber Lexicon & Definitions)         -->
+  <!-- ========================================================================= -->
+  <div class="glossary-layout" id="glossary-layout" style="display: none;">
+    <!-- Glossary Command Center Header -->
+    <div class="glossary-hero">
+      <div class="glossary-hero-left">
+        <div class="glossary-hero-badge">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+          </svg>
+          <span>SECURITY LEXICON & ENCYCLOPEDIA</span>
+        </div>
+        <h2 class="glossary-hero-title">A–Z Cyber Defense Glossary</h2>
+        <p class="glossary-hero-subtitle">
+          Authoritative definitions, operational mechanics, MITRE mappings, and technical countermeasures for all cybersecurity terms, protocols, threat vectors, and defense standards used throughout this application.
+        </p>
+      </div>
+
+      <!-- Search Box -->
+      <div class="glossary-search-wrapper">
+        <div class="search-box glossary-search-box">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="glossary-search-input" placeholder="Search terms (e.g. BGP, Kerberoasting, uRPF, Zero-Trust)..." autocomplete="off">
+          <button id="glossary-clear-search-btn" class="clear-btn" aria-label="Clear Glossary Search">&times;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alphabetical Quick-Jump Bar -->
+    <div class="glossary-alphabet-bar" id="glossary-alphabet-bar" role="navigation" aria-label="Alphabetical Jump Navigation">
+      <!-- Rendered via glossary.js -->
+    </div>
+
+    <!-- Category Filter Pills -->
+    <div class="glossary-category-bar" id="glossary-category-pills" role="toolbar" aria-label="Glossary Category Filter">
+      <!-- Rendered via glossary.js -->
+    </div>
+
+    <!-- Glossary Terms Cards Container -->
+    <div class="glossary-cards-container" id="glossary-cards-container">
+      <!-- Rendered via glossary.js -->
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 4. MCQ QUIZ SECTION (Scenario-Based Threat Identification 10 MCQs)        -->
+  <!-- ========================================================================= -->
+  <div class="quiz-layout" id="quiz-layout" style="display: none;">
+    <!-- Quiz Hero Header -->
+    <div class="quiz-hero">
+      <div class="quiz-hero-left">
+        <div class="quiz-hero-badge">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          <span>ADVERSARY IDENTIFICATION SIMULATOR</span>
+        </div>
+        <h2 class="quiz-hero-title">Attack Identification MCQ Challenge</h2>
+        <p class="quiz-hero-subtitle">
+          Read real-world incident briefings, forensic telemetry, and behavioral descriptions across all security domains to identify the matching threat vector. Complete 10 scenario questions per attempt with instant feedback, forensic debriefs, scoring, and re-attempt options.
+        </p>
+      </div>
+
+      <!-- Category Filter Pills Toolbar -->
+      <div class="quiz-category-toolbar-wrap">
+        <span class="quiz-toolbar-label">Select Exam Module / Attack Category:</span>
+        <div class="quiz-category-bar" id="quiz-category-pills" role="toolbar" aria-label="Quiz Category Filter">
+          <!-- Rendered via quiz.js -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Quiz Workspace (Dynamic HUD, Question Card, or Scorecard) -->
+    <div class="quiz-workspace" id="quiz-workspace-container">
+      <!-- Rendered via quiz.js -->
+    </div>
+  </div>
+
+  <!-- Assessment Scorecard Modal -->
+  <div class="modal-overlay" id="assessment-modal" role="dialog" aria-modal="true" aria-labelledby="assessment-modal-title">
+    <div class="modal-card" id="assessment-modal-body">
+      <!-- Rendered via assessment.js -->
+    </div>
+  </div>
+
+  <!-- Overall Enterprise Portfolio Scorecard Modal -->
+  <div class="modal-overlay" id="portfolio-modal" role="dialog" aria-modal="true" aria-labelledby="portfolio-modal-title">
+    <div class="modal-card portfolio-modal-card" id="portfolio-modal-body">
+      <!-- Rendered via assessment.js -->
+    </div>
+  </div>
+
   <!-- Toast Notification for Copy Actions -->
   <div id="toast" class="toast" role="alert" aria-live="polite">
     <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2">
@@ -134,5 +427,8 @@
   </div>
 
   <script src="app.js"></script>
+  <script src="assessment.js"></script>
+  <script src="glossary.js"></script>
+  <script src="quiz.js"></script>
 </body>
 </html>
