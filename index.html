@@ -1,23 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cyber Attack Book | Network, OS, & Application Security Dossiers</title>
-  <meta name="description" content="Interactive cyber security attack book covering Network Infrastructure, Operating System, and Application & Specialized Attacks.">
+  <meta name="description"
+    content="Interactive cyber security attack book covering Network Infrastructure, Operating System, and Application & Specialized Attacks.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5W1EQYH436"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', 'G-5W1EQYH436');
+</script>
+
 <body class="dark-theme">
   <!-- Top Global Navigation Bar -->
   <header class="top-nav">
     <div class="nav-brand">
       <div class="brand-shield">
-        <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          <path d="M9 12l2 2 4-4"/>
+        <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          <path d="M9 12l2 2 4-4" />
         </svg>
       </div>
       <div class="brand-text-block">
@@ -28,26 +43,27 @@
 
     <!-- Central Mode Switcher -->
     <div class="mode-switch-wrapper" role="tablist" aria-label="Operating Mode Selection">
-      <button class="mode-toggle-btn active" id="btn-mode-learning" role="tab" aria-selected="true" data-mode="learning">
+      <button class="mode-toggle-btn active" id="btn-mode-learning" role="tab" aria-selected="true"
+        data-mode="learning">
         <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2">
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
         </svg>
         <span>Learning</span>
         <span class="mode-badge-count" id="mode-learning-count">95 Vectors</span>
       </button>
       <button class="mode-toggle-btn" id="btn-mode-assessment" role="tab" aria-selected="false" data-mode="assessment">
         <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          <polyline points="12 8 12 12 15 15"/>
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          <polyline points="12 8 12 12 15 15" />
         </svg>
         <span>Assessment</span>
         <span class="mode-badge-action" id="mode-assessment-count">10 Scenarios</span>
       </button>
       <button class="mode-toggle-btn" id="btn-mode-glossary" role="tab" aria-selected="false" data-mode="glossary">
         <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2">
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
         </svg>
         <span>Glossary</span>
         <span class="mode-badge-count" id="glossary-term-badge">123 Terms</span>
@@ -67,12 +83,15 @@
     <div class="nav-right-section">
       <!-- Universal Attack Search Bar on right side after title bar -->
       <div class="nav-search-bar" id="nav-search-wrapper">
-        <svg class="nav-search-icon" viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none">
+        <svg class="nav-search-icon" viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2"
+          fill="none">
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-        <input type="text" id="top-search-input" placeholder="Search 95 vectors (SSRF, SQLi, T1190)..." autocomplete="off" spellcheck="false">
-        <button id="top-clear-search-btn" class="nav-clear-btn" aria-label="Clear Search" style="display: none;">&times;</button>
+        <input type="text" id="top-search-input" placeholder="Search 95 vectors (SSRF, SQLi, T1190)..."
+          autocomplete="off" spellcheck="false">
+        <button id="top-clear-search-btn" class="nav-clear-btn" aria-label="Clear Search"
+          style="display: none;">&times;</button>
         <span class="nav-search-shortcut" title="Press / to focus">/</span>
       </div>
 
@@ -94,7 +113,8 @@
 
       <!-- Assessment Mode Top Metrics -->
       <div class="nav-metrics" id="assessment-metrics" style="display: none;">
-        <button class="nav-portfolio-btn" id="btn-nav-portfolio-scorecard" title="Open Enterprise Defense Portfolio Audit">
+        <button class="nav-portfolio-btn" id="btn-nav-portfolio-scorecard"
+          title="Open Enterprise Defense Portfolio Audit">
           <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
             <polyline points="14 2 14 8 20 8"></polyline>
@@ -144,7 +164,8 @@
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-        <input type="text" id="search-input" placeholder="Filter 95 attacks (name, MITRE, target)..." autocomplete="off">
+        <input type="text" id="search-input" placeholder="Filter 95 attacks (name, MITRE, target)..."
+          autocomplete="off">
         <button id="clear-search-btn" class="clear-btn" aria-label="Clear Search">&times;</button>
       </div>
 
@@ -195,15 +216,23 @@
       <!-- View Navigation Tabs -->
       <nav class="dossier-tabs" id="dossier-tabs" role="tablist">
         <button class="tab-btn active" data-tab="anatomy" role="tab" id="tab-btn-anatomy">
-          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
           Attack Anatomy & Kill Chain
         </button>
         <button class="tab-btn" data-tab="detection" role="tab" id="tab-btn-detection">
-          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
           Detection Engineering & Rules
         </button>
         <button class="tab-btn" data-tab="defense" role="tab" id="tab-btn-defense">
-          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
           Defense & Hardening Matrix
         </button>
       </nav>
@@ -328,14 +357,15 @@
       <div class="glossary-hero-left">
         <div class="glossary-hero-badge">
           <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
-            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
           </svg>
           <span>SECURITY LEXICON & ENCYCLOPEDIA</span>
         </div>
         <h2 class="glossary-hero-title">A–Z Cyber Defense Glossary</h2>
         <p class="glossary-hero-subtitle">
-          Authoritative definitions, operational mechanics, MITRE mappings, and technical countermeasures for all cybersecurity terms, protocols, threat vectors, and defense standards used throughout this application.
+          Authoritative definitions, operational mechanics, MITRE mappings, and technical countermeasures for all
+          cybersecurity terms, protocols, threat vectors, and defense standards used throughout this application.
         </p>
       </div>
 
@@ -346,19 +376,22 @@
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-          <input type="text" id="glossary-search-input" placeholder="Search terms (e.g. BGP, Kerberoasting, uRPF, Zero-Trust)..." autocomplete="off">
+          <input type="text" id="glossary-search-input"
+            placeholder="Search terms (e.g. BGP, Kerberoasting, uRPF, Zero-Trust)..." autocomplete="off">
           <button id="glossary-clear-search-btn" class="clear-btn" aria-label="Clear Glossary Search">&times;</button>
         </div>
       </div>
     </div>
 
     <!-- Alphabetical Quick-Jump Bar -->
-    <div class="glossary-alphabet-bar" id="glossary-alphabet-bar" role="navigation" aria-label="Alphabetical Jump Navigation">
+    <div class="glossary-alphabet-bar" id="glossary-alphabet-bar" role="navigation"
+      aria-label="Alphabetical Jump Navigation">
       <!-- Rendered via glossary.js -->
     </div>
 
     <!-- Category Filter Pills -->
-    <div class="glossary-category-bar" id="glossary-category-pills" role="toolbar" aria-label="Glossary Category Filter">
+    <div class="glossary-category-bar" id="glossary-category-pills" role="toolbar"
+      aria-label="Glossary Category Filter">
       <!-- Rendered via glossary.js -->
     </div>
 
@@ -385,7 +418,9 @@
         </div>
         <h2 class="quiz-hero-title">Attack Identification MCQ Challenge</h2>
         <p class="quiz-hero-subtitle">
-          Read real-world incident briefings, forensic telemetry, and behavioral descriptions across all security domains to identify the matching threat vector. Complete 10 scenario questions per attempt with instant feedback, forensic debriefs, scoring, and re-attempt options.
+          Read real-world incident briefings, forensic telemetry, and behavioral descriptions across all security
+          domains to identify the matching threat vector. Complete 10 scenario questions per attempt with instant
+          feedback, forensic debriefs, scoring, and re-attempt options.
         </p>
       </div>
 
@@ -405,14 +440,16 @@
   </div>
 
   <!-- Assessment Scorecard Modal -->
-  <div class="modal-overlay" id="assessment-modal" role="dialog" aria-modal="true" aria-labelledby="assessment-modal-title">
+  <div class="modal-overlay" id="assessment-modal" role="dialog" aria-modal="true"
+    aria-labelledby="assessment-modal-title">
     <div class="modal-card" id="assessment-modal-body">
       <!-- Rendered via assessment.js -->
     </div>
   </div>
 
   <!-- Overall Enterprise Portfolio Scorecard Modal -->
-  <div class="modal-overlay" id="portfolio-modal" role="dialog" aria-modal="true" aria-labelledby="portfolio-modal-title">
+  <div class="modal-overlay" id="portfolio-modal" role="dialog" aria-modal="true"
+    aria-labelledby="portfolio-modal-title">
     <div class="modal-card portfolio-modal-card" id="portfolio-modal-body">
       <!-- Rendered via assessment.js -->
     </div>
@@ -421,7 +458,7 @@
   <!-- Toast Notification for Copy Actions -->
   <div id="toast" class="toast" role="alert" aria-live="polite">
     <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2">
-      <path d="M20 6L9 17l-5-5"/>
+      <path d="M20 6L9 17l-5-5" />
     </svg>
     <span id="toast-text">Rule copied to clipboard!</span>
   </div>
@@ -431,4 +468,5 @@
   <script src="glossary.js"></script>
   <script src="quiz.js"></script>
 </body>
+
 </html>
