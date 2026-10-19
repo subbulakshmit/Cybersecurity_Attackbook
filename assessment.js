@@ -1221,6 +1221,7 @@ function initAssessmentMode() {
   const btnAssessment = document.getElementById("btn-mode-assessment");
   const btnGlossary = document.getElementById("btn-mode-glossary");
   const btnQuiz = document.getElementById("btn-mode-quiz");
+  const btnLab = document.getElementById("btn-mode-lab");
 
   if (btnLearning) {
     btnLearning.addEventListener("click", () => switchAppMode("learning"));
@@ -1234,8 +1235,11 @@ function initAssessmentMode() {
   if (btnQuiz) {
     btnQuiz.addEventListener("click", () => switchAppMode("quiz"));
   }
+  if (btnLab) {
+    btnLab.addEventListener("click", () => switchAppMode("lab"));
+  }
 
-  // Parse hash to see if assessment or glossary mode was requested
+  // Parse hash to see if assessment, glossary, quiz, or lab mode was requested
   parseAssessmentUrlState();
 
   // Render initial assessment components
@@ -1259,6 +1263,8 @@ function parseAssessmentUrlState() {
     switchAppMode("glossary", false);
   } else if (hash.startsWith("quiz")) {
     switchAppMode("quiz", false);
+  } else if (hash.startsWith("lab")) {
+    switchAppMode("lab", false);
   } else if (currentAppMode !== "learning") {
     switchAppMode("learning", false);
   }
@@ -1275,19 +1281,22 @@ function switchAppMode(newMode, updateHash = true) {
   const btnAssessment = document.getElementById("btn-mode-assessment");
   const btnGlossary = document.getElementById("btn-mode-glossary");
   const btnQuiz = document.getElementById("btn-mode-quiz");
+  const btnLab = document.getElementById("btn-mode-lab");
 
   const learningLayout = document.getElementById("learning-layout");
   const assessmentLayout = document.getElementById("assessment-layout");
   const glossaryLayout = document.getElementById("glossary-layout");
   const quizLayout = document.getElementById("quiz-layout");
+  const labLayout = document.getElementById("lab-layout");
 
   const learningMetrics = document.getElementById("learning-metrics");
   const assessmentMetrics = document.getElementById("assessment-metrics");
   const glossaryMetrics = document.getElementById("glossary-metrics");
   const quizMetrics = document.getElementById("quiz-metrics");
+  const labMetrics = document.getElementById("lab-metrics");
 
   // Reset active classes
-  [btnLearning, btnAssessment, btnGlossary, btnQuiz].forEach(btn => {
+  [btnLearning, btnAssessment, btnGlossary, btnQuiz, btnLab].forEach(btn => {
     if (btn) {
       btn.classList.remove("active");
       btn.setAttribute("aria-selected", "false");
@@ -1299,12 +1308,14 @@ function switchAppMode(newMode, updateHash = true) {
   if (assessmentLayout) assessmentLayout.style.display = "none";
   if (glossaryLayout) glossaryLayout.style.display = "none";
   if (quizLayout) quizLayout.style.display = "none";
+  if (labLayout) labLayout.style.display = "none";
 
   // Hide all metrics
   if (learningMetrics) learningMetrics.style.display = "none";
   if (assessmentMetrics) assessmentMetrics.style.display = "none";
   if (glossaryMetrics) glossaryMetrics.style.display = "none";
   if (quizMetrics) quizMetrics.style.display = "none";
+  if (labMetrics) labMetrics.style.display = "none";
 
   if (newMode === "learning") {
     if (btnLearning) {
@@ -1359,6 +1370,21 @@ function switchAppMode(newMode, updateHash = true) {
 
     if (updateHash) {
       window.location.hash = "quiz";
+    }
+  } else if (newMode === "lab") {
+    if (btnLab) {
+      btnLab.classList.add("active");
+      btnLab.setAttribute("aria-selected", "true");
+    }
+    if (labLayout) labLayout.style.display = "block";
+    if (labMetrics) labMetrics.style.display = "flex";
+
+    if (typeof onLabModeActivated === "function") {
+      onLabModeActivated();
+    }
+
+    if (updateHash) {
+      window.location.hash = typeof currentLabAttack !== "undefined" && currentLabAttack ? `lab?attack=${currentLabAttack.id}` : "lab";
     }
   }
 }

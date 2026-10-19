@@ -139,6 +139,18 @@ const GLOSSARY_DATA = [
     reference: "IETF RFC 1930",
     appLinks: { mode: "assessment", scenarioId: "sc_fintech_ddos" }
   },
+  {
+    letter: "A",
+    term: "arpspoof",
+    acronym: "arpspoof",
+    category: "Attacks & Exploits",
+    domainTag: "network",
+    definition: "A classic command-line security tool from the dsniff suite that transmits forged gratuitous ARP replies across a local network segment to poison the ARP cache of both target victims and default gateways.",
+    relevance: "Demonstrated in the Cyber Attack Lab MITM simulation (10.10.14.5 intercepting victim 10.10.14.20) to silently reroute all outbound LAN frames through an attacker proxy for credential sniffing.",
+    tags: ["MITM", "ARP Spoofing", "dsniff", "Layer 2", "Packet Interception"],
+    reference: "dsniff Security Suite",
+    appLinks: { mode: "lab", attackId: "mitm" }
+  },
 
   // =========================================================================
   // LETTER B
@@ -439,6 +451,30 @@ const GLOSSARY_DATA = [
     reference: "NIST SP 800-82",
     appLinks: { mode: "assessment", scenarioId: "sc_scada_grid" }
   },
+  {
+    letter: "D",
+    term: "Diamorphine LKM Rootkit",
+    acronym: "Diamorphine",
+    category: "Attacks & Exploits",
+    domainTag: "attack",
+    definition: "An open-source Loadable Kernel Module (LKM) rootkit for Linux kernels that provides kernel-level stealth by hooking system call tables to hide rogue processes, files, directories, and its own kernel module from standard utilities (ps, ls, lsmod).",
+    relevance: "Featured in the Cyber Attack Lab Rootkit simulation, demonstrating how kernel hooks hide adversary persistence and how forensic tools like rkhunter and chkrootkit detect hooked syscall tables.",
+    tags: ["Rootkit", "LKM", "Kernel Hook", "Persistence", "Stealth"],
+    reference: "MITRE ATT&CK T1014",
+    appLinks: { mode: "lab", attackId: "rootkit" }
+  },
+  {
+    letter: "D",
+    term: "dnscat2 (DNS Tunneling)",
+    acronym: "dnscat2",
+    category: "Attacks & Exploits",
+    domainTag: "network",
+    definition: "A command-and-control (C2) and data exfiltration tool that establishes an encrypted bidirectional tunnel over the DNS protocol by encoding data chunks into recursive DNS queries and authoritative TXT records.",
+    relevance: "Demonstrated in the Cyber Attack Lab Data Exfiltration scenario, showing how adversary archives are base64-chunked and tunneled past perimeter egress firewalls using recursive port 53 traffic.",
+    tags: ["DNS Tunneling", "Exfiltration", "C2", "Covert Channel", "Egress Bypass"],
+    reference: "MITRE ATT&CK T1071.004",
+    appLinks: { mode: "lab", attackId: "dataexfil" }
+  },
 
   // =========================================================================
   // LETTER E
@@ -571,6 +607,18 @@ const GLOSSARY_DATA = [
     reference: "Google Open Source / gvisor.dev",
     appLinks: { mode: "assessment", scenarioId: "sc_kernel_escape" }
   },
+  {
+    letter: "G",
+    term: "GTFOBins",
+    acronym: "GTFOBins",
+    category: "OS & Host",
+    domainTag: "host",
+    definition: "A curated open repository of Unix and Linux system binaries that can be abused by adversaries or penetration testers to bypass local security restrictions, spawn interactive root shells, or escalate privileges when configured with SUID bits or sudo NOPASSWD permissions.",
+    relevance: "Used in the Cyber Attack Lab Privilege Escalation and SUID Exploitation labs, where standard binaries such as find, vim, and nmap are abused with -exec flags to instantly drop root shells.",
+    tags: ["Privilege Escalation", "SUID", "sudo", "Linux Security", "GTFOBins"],
+    reference: "MITRE ATT&CK T1548.001",
+    appLinks: { mode: "lab", attackId: "suidexploit" }
+  },
 
   // =========================================================================
   // LETTER H
@@ -598,6 +646,18 @@ const GLOSSARY_DATA = [
     tags: ["Web Security", "HTTPS", "Browser Security", "RFC 6797"],
     reference: "IETF RFC 6797",
     appLinks: { mode: "assessment", scenarioId: "sc_wireless_pinedrop" }
+  },
+  {
+    letter: "H",
+    term: "hping3",
+    acronym: "hping3",
+    category: "Attacks & Exploits",
+    domainTag: "network",
+    definition: "A versatile network packet crafting tool and TCP/IP protocol analyzer capable of assembling custom SYN, UDP, and ICMP packets at maximum line-rate speeds for firewall testing, tracerouting, and volumetric DoS simulations.",
+    relevance: "Featured in the Cyber Attack Lab DoS simulation (`hping3 -S --flood -V -p 80 10.10.14.20`), exhausting Apache connection worker pools and triggering Snort threshold rule sid:1010001.",
+    tags: ["Packet Crafting", "SYN Flood", "DoS", "Layer 4", "Network Testing"],
+    reference: "hping Network Tool",
+    appLinks: { mode: "lab", attackId: "dos" }
   },
 
   // =========================================================================
@@ -754,6 +814,18 @@ const GLOSSARY_DATA = [
     tags: ["Windows", "Credential Access", "Mimikatz", "Security Subsystem"],
     reference: "MITRE ATT&CK T1003.001",
     appLinks: { mode: "assessment", scenarioId: "sc_health_ransomware" }
+  },
+  {
+    letter: "L",
+    term: "LinPEAS (Linux Privilege Escalation Awesome Script)",
+    acronym: "LinPEAS",
+    category: "OS & Host",
+    domainTag: "host",
+    definition: "An automated privilege escalation enumeration script for Linux, Unix, and MacOS systems that searches for misconfigured permissions, SUID/SGID binaries, cron jobs, sudo rules, unshadowed password files, and vulnerable kernel versions.",
+    relevance: "Demonstrated in the Cyber Attack Lab Privilege Escalation simulation; uploaded to low-privilege shells to instantly flag root-owned find SUID binaries and writable cron schedules.",
+    tags: ["Privilege Escalation", "Enumeration", "Reconnaissance", "Linux Host"],
+    reference: "MITRE ATT&CK T1082, T1069",
+    appLinks: { mode: "lab", attackId: "privesc" }
   },
 
   // =========================================================================
@@ -1070,6 +1142,30 @@ const GLOSSARY_DATA = [
     tags: ["TCP", "Layer 4", "DDoS", "Connection Exhaustion"],
     reference: "MITRE ATT&CK T1498.001",
     appLinks: { mode: "assessment", scenarioId: "sc_fintech_ddos" }
+  },
+  {
+    letter: "S",
+    term: "Slowloris",
+    acronym: "Slowloris",
+    category: "Attacks & Exploits",
+    domainTag: "network",
+    definition: "A low-bandwidth Denial of Service (DoS) attack tool that opens hundreds of partial HTTP connections to a target web server and sends incomplete request headers at regular intervals, exhausting server thread pools while consuming minimal network bandwidth.",
+    relevance: "Demonstrated in the Cyber Attack Lab DoS simulation alongside hping3, starving Apache 2.4 MaxRequestWorkers and generating Snort sid:1010002 partial header alerts.",
+    tags: ["DoS", "HTTP", "Application Layer", "Connection Starvation", "Apache"],
+    reference: "MITRE ATT&CK T1499.003",
+    appLinks: { mode: "lab", attackId: "dos" }
+  },
+  {
+    letter: "S",
+    term: "Snort IDS (Intrusion Detection System)",
+    acronym: "Snort",
+    category: "Defenses & Controls",
+    domainTag: "detection",
+    definition: "An open-source, signature-driven and protocol-analysis Network Intrusion Detection and Prevention System (NIDS/NIPS) developed by Sourcefire/Cisco that performs real-time traffic analysis and packet logging.",
+    relevance: "Powers the Monitor/IDS console across all 40 simulation labs in the Cyber Attack Lab, matching Snort signatures (SIDs), flagging brute-force spikes, detecting shellcode NOP sleds, and recommending dynamic iptables defenses.",
+    tags: ["NIDS", "Snort", "Signatures", "Detection Engineering", "Rule Syntax"],
+    reference: "Cisco Snort 3 Reference Manual",
+    appLinks: { mode: "lab", attackId: "dos" }
   },
 
   // =========================================================================
@@ -1780,6 +1876,16 @@ function renderGlossaryList() {
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
               </svg>
               <span>Test in Assessment Mode</span>
+            </button>
+          `;
+        } else if (termItem.appLinks.mode === "lab") {
+          appLinkHtml = `
+            <button class="glossary-app-link-btn lab" onclick="openLabSimulation('${termItem.appLinks.attackId}')" title="Launch Interactive Simulation Lab">
+              <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="2">
+                <polyline points="4 17 10 11 4 5"></polyline>
+                <line x1="12" y1="19" x2="20" y2="19"></line>
+              </svg>
+              <span>Launch Attack Lab Sim</span>
             </button>
           `;
         }

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * CYBER ATTACK BOOK - ENTERPRISE THREAT INTELLIGENCE & DEFENSE CONSOLE
  * Comprehensive Threat Dossiers across 8 Enterprise Security Domains (40 Vectors)
  */
@@ -9493,13 +9493,11 @@ function renderSidebarList() {
     card.setAttribute("aria-label", `Select Attack ${numStr}: ${attack.name}`);
 
     card.innerHTML = `
-      <div class="attack-card-meta">
-        <span class="attack-number">ATTACK ${numStr}</span>
-        <span class="module-mini-tag ${attack.moduleGroup}">${attack.moduleGroup.toUpperCase()}</span>
-        <span class="severity-tag ${attack.severity}">${attack.severity}</span>
+      <div class="attack-nav-compact">
+        <span class="attack-num-pill">${numStr}</span>
+        <span class="attack-name-compact" title="${attack.name}">${attack.shortName}</span>
+        <span class="severity-dot-indicator ${attack.severity}" title="Severity: ${attack.severity}"></span>
       </div>
-      <div class="attack-title">${attack.shortName}</div>
-      <div class="attack-mitre-brief">${attack.mitre}</div>
     `;
 
     card.addEventListener("click", () => {
@@ -9532,6 +9530,18 @@ function loadAttack(attackId) {
     p.classList.toggle("active", p.id === `tab-${currentTab}`);
   });
 
+  // Check if attack has matching lab simulation
+  const labId = window.LEARNING_TO_LAB_MAP ? window.LEARNING_TO_LAB_MAP[attack.id] : null;
+  const labBtnHtml = labId ? `
+    <button class="jump-to-lab-btn" onclick="openLabSimulation('${labId}')" title="Launch Interactive Simulation Lab for this attack">
+      <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
+        <polyline points="4 17 10 11 4 5"></polyline>
+        <line x1="12" y1="19" x2="20" y2="19"></line>
+      </svg>
+      <span>Launch Attack Lab Sim</span>
+    </button>
+  ` : '';
+
   // 1. Render Dossier Header
   const headerContainer = document.getElementById("dossier-header");
   headerContainer.innerHTML = `
@@ -9542,7 +9552,8 @@ function loadAttack(attackId) {
         <span class="severity-tag ${attack.severity}">SEVERITY: ${attack.severity}</span>
         <span class="learning-mode-indicator">LEARNING MODE</span>
       </div>
-      <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+        ${labBtnHtml}
         <button class="jump-to-assessment-btn" id="btn-jump-assessment" title="Launch Assessment Scenario with this threat vector">
           <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>

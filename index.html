@@ -27,21 +27,24 @@
 <body class="dark-theme">
   <!-- Top Global Navigation Bar -->
   <header class="top-nav">
-    <div class="nav-brand">
-      <div class="brand-shield">
-        <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"
-          stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-          <path d="M9 12l2 2 4-4" />
-        </svg>
-      </div>
-      <div class="brand-text-block">
+    <!-- First Line: Main Title in Center -->
+    <div class="top-nav-line-1">
+      <div class="brand-title-center">
+        <div class="brand-shield">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            <path d="M9 12l2 2 4-4" />
+          </svg>
+        </div>
         <h1 class="brand-title">CYBER ATTACK BOOK</h1>
-        <span class="brand-subtitle">Enterprise Threat Intelligence &amp; SOC Defense Console</span>
       </div>
     </div>
 
-    <!-- Central Mode Switcher -->
+    <!-- Second Line: Rest All in Second Line -->
+
+
+    <!-- Central Mode Switcher (5 High-Visibility Operating Modes) -->
     <div class="mode-switch-wrapper" role="tablist" aria-label="Operating Mode Selection">
       <button class="mode-toggle-btn active" id="btn-mode-learning" role="tab" aria-selected="true"
         data-mode="learning">
@@ -66,7 +69,7 @@
           <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
         </svg>
         <span>Glossary</span>
-        <span class="mode-badge-count" id="glossary-term-badge">123 Terms</span>
+        <span class="mode-badge-count" id="glossary-term-badge">131 Terms</span>
       </button>
       <button class="mode-toggle-btn" id="btn-mode-quiz" role="tab" aria-selected="false" data-mode="quiz">
         <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2">
@@ -76,6 +79,14 @@
         </svg>
         <span>MCQ Quiz</span>
         <span class="mode-badge-action" id="mode-quiz-count">10 MCQs</span>
+      </button>
+      <button class="mode-toggle-btn" id="btn-mode-lab" role="tab" aria-selected="false" data-mode="lab">
+        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2">
+          <polyline points="4 17 10 11 4 5"></polyline>
+          <line x1="12" y1="19" x2="20" y2="19"></line>
+        </svg>
+        <span>Attack Lab</span>
+        <span class="mode-badge-lab" id="mode-lab-count">40 Labs</span>
       </button>
     </div>
 
@@ -135,7 +146,7 @@
       <div class="nav-metrics" id="glossary-metrics" style="display: none;">
         <div class="metric-pill">
           <span class="metric-label">TERMS:</span>
-          <span class="metric-val highlight" id="glossary-term-count">123 Terms</span>
+          <span class="metric-val highlight" id="glossary-term-count">131 Terms</span>
         </div>
       </div>
 
@@ -150,6 +161,23 @@
           <span class="metric-val highlight" id="nav-quiz-score-pill">0 / 10</span>
         </div>
       </div>
+
+      <!-- Attack Lab Mode Top Metrics -->
+      <div class="nav-metrics" id="lab-metrics" style="display: none;">
+        <div class="metric-pill live-indicator">
+          <span class="pulse-dot"></span>
+          <span>LIVE SOC SIM</span>
+        </div>
+        <div class="metric-pill">
+          <span class="metric-label">LABS:</span>
+          <span class="metric-val highlight" id="nav-lab-count">40 Sims</span>
+        </div>
+        <div class="metric-pill">
+          <span class="metric-label">ACTORS:</span>
+          <span class="metric-val highlight">Attacker · Target · Snort</span>
+        </div>
+      </div>
+    </div>
     </div>
   </header>
 
@@ -439,6 +467,191 @@
     </div>
   </div>
 
+  <!-- ========================================================================= -->
+  <!-- 5. CYBER ATTACK LAB LAYOUT (Metasploit Simulation & Host/Network Lab)     -->
+  <!-- ========================================================================= -->
+  <div class="lab-layout" id="lab-layout" style="display: none;">
+    <!-- Lab Hero Header Bar -->
+    <section class="lab-hero-bar">
+      <div class="lab-hero-left">
+        <div class="lab-hero-title-row">
+          <div class="lab-icon-badge">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2">
+              <polyline points="4 17 10 11 4 5"></polyline>
+              <line x1="12" y1="19" x2="20" y2="19"></line>
+            </svg>
+          </div>
+          <div>
+            <div class="lab-title-badge-row">
+              <h2 class="lab-title" id="labAttackTitle">Cyber Attack Lab</h2>
+              <span class="badge lab-badge">Simulation · Educational Only</span>
+              <span class="lab-platform-tag">Kali Linux 2024 · Ubuntu 20.04 · Snort 3.0</span>
+            </div>
+            <div class="subtitle" id="labSubtitle">Select an attack to begin simulation</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lab-hero-right">
+        <button class="lab-jump-dossier-btn" id="labJumpDossierBtn" style="display: none;"
+          title="Open this attack in Learning Mode Dossier">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+          </svg>
+          <span>Open Threat Dossier</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Lab Category Pills & Search Filter -->
+    <div class="lab-filter-section">
+      <div class="lab-category-pills" id="labCategoryPills">
+        <!-- Rendered via lab.js -->
+      </div>
+      <div class="lab-search-wrapper">
+        <div class="search-box lab-search-box">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="labSearchInput" placeholder="Filter 40 labs (DoS, EIP, SUID, Snort, MySQL)..."
+            autocomplete="off">
+          <button id="labClearSearchBtn" class="clear-btn" aria-label="Clear Lab Search">&times;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Attack Selection Buttons -->
+    <div class="lab-attacks" id="labAttackBtns">
+      <!-- Rendered via lab.js -->
+    </div>
+
+    <!-- Action Command Controls -->
+    <div class="lab-actions">
+      <button class="run-btn" id="labRunBtn">▶ Run Simulation</button>
+      <button class="reset-btn" id="labResetBtn">↺ Reset</button>
+      <div class="step-indicator">Step: <span id="labStepLabel">—</span></div>
+    </div>
+
+    <!-- 3-Actor Interactive Columns (Attacker, Victim, Monitor) -->
+    <div class="lab-columns">
+      <!-- Column 1: Attacker -->
+      <div class="col attacker">
+        <div class="desc-half">
+          <div class="col-header">
+            <span class="col-dot"></span>
+            <span class="col-role">Attacker</span>
+            <span class="col-ipbadge" id="labAIP">10.10.14.5</span>
+          </div>
+          <div id="labADesc"></div>
+        </div>
+        <div class="term-half">
+          <div class="term-topbar">
+            <div class="term-trafic"><span class="td r"></span><span class="td y"></span><span class="td g"></span>
+            </div>
+            <div class="term-info">
+              <div class="term-name">Attacker Terminal</div>
+              <div class="term-conn" id="labAConn">attacker@kali — Kali Linux 2024</div>
+            </div>
+          </div>
+          <div class="term-body" id="attackerBody"><span class="ph">attacker@kali:~$ _</span></div>
+        </div>
+      </div>
+
+      <!-- Column 2: Victim -->
+      <div class="col victim">
+        <div class="desc-half">
+          <div class="col-header">
+            <span class="col-dot"></span>
+            <span class="col-role">Victim</span>
+            <span class="col-ipbadge" id="labVIP">10.10.14.20</span>
+          </div>
+          <div id="labVDesc"></div>
+        </div>
+        <div class="term-half">
+          <div class="term-topbar">
+            <div class="term-trafic"><span class="td r"></span><span class="td y"></span><span class="td g"></span>
+            </div>
+            <div class="term-info">
+              <div class="term-name">Victim Terminal</div>
+              <div class="term-conn" id="labVConn">victim@target — Ubuntu 20.04 LTS</div>
+            </div>
+          </div>
+          <div class="term-body" id="victimBody"><span class="ph">victim@target:~$ _</span></div>
+        </div>
+      </div>
+
+      <!-- Column 3: Monitor / IDS -->
+      <div class="col monitor">
+        <div class="desc-half">
+          <div class="col-header">
+            <span class="col-dot"></span>
+            <span class="col-role">Monitor / IDS</span>
+            <span class="col-ipbadge" id="labMIP">10.10.14.1 · eth0</span>
+          </div>
+          <div id="labMDesc"></div>
+        </div>
+        <div class="term-half">
+          <div class="term-topbar">
+            <div class="term-trafic"><span class="td r"></span><span class="td y"></span><span class="td g"></span>
+            </div>
+            <div class="term-info">
+              <div class="term-name">Monitor / IDS Terminal</div>
+              <div class="term-conn" id="labMConn">ids@monitor — Snort 3 · all-traffic</div>
+            </div>
+          </div>
+          <div class="term-body" id="monitorBody"><span class="ph">snort -i eth0 -A console -q</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Steps Progress Bar -->
+    <div class="steps-bar" id="labStepsBar"></div>
+
+    <!-- Step-by-Step Breakdown -->
+    <div class="step-details">
+      <div class="step-details-header">
+        <div>
+          <h2>Step-by-Step Breakdown</h2>
+          <p>What each actor is doing at each stage of the attack</p>
+        </div>
+      </div>
+      <div class="sd-cols">
+        <div class="sd-col sd-attacker">
+          <div class="sd-col-head"><span class="sd-col-dot"></span><span class="sd-col-title">Attacker Steps</span>
+          </div>
+          <ul class="sd-steps" id="sdAttacker"></ul>
+        </div>
+        <div class="sd-col sd-victim">
+          <div class="sd-col-head"><span class="sd-col-dot"></span><span class="sd-col-title">Victim Steps</span></div>
+          <ul class="sd-steps" id="sdVictim"></ul>
+        </div>
+        <div class="sd-col sd-monitor">
+          <div class="sd-col-head"><span class="sd-col-dot"></span><span class="sd-col-title">Monitor Steps</span></div>
+          <ul class="sd-steps" id="sdMonitor"></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Snort Alert Rules Grid -->
+    <div class="alert-rules">
+      <div class="alert-rules-header">
+        <div>
+          <h2>🔔 Snort Alert Rules Triggered</h2>
+          <p>Rules that fire during this attack — SID, rule definition, and detection mechanics</p>
+        </div>
+      </div>
+      <div class="rules-grid" id="labRulesGrid"></div>
+    </div>
+
+    <!-- Educational Simulation Footer -->
+    <footer class="lab-footer">
+      <span>Educational simulation — all output is hardcoded and scripted. No real exploits, Metasploit modules, or
+        network traffic are executed.</span>
+    </footer>
+  </div>
+
   <!-- Assessment Scorecard Modal -->
   <div class="modal-overlay" id="assessment-modal" role="dialog" aria-modal="true"
     aria-labelledby="assessment-modal-title">
@@ -467,6 +680,7 @@
   <script src="assessment.js"></script>
   <script src="glossary.js"></script>
   <script src="quiz.js"></script>
+  <script src="lab.js"></script>
 </body>
 
 </html>
