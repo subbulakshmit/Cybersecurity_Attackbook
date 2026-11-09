@@ -1222,6 +1222,8 @@ function initAssessmentMode() {
   const btnGlossary = document.getElementById("btn-mode-glossary");
   const btnQuiz = document.getElementById("btn-mode-quiz");
   const btnLab = document.getElementById("btn-mode-lab");
+  const btnTools = document.getElementById("btn-mode-tools");
+  const btnAnalytics = document.getElementById("btn-mode-analytics");
 
   if (btnLearning) {
     btnLearning.addEventListener("click", () => switchAppMode("learning"));
@@ -1238,8 +1240,14 @@ function initAssessmentMode() {
   if (btnLab) {
     btnLab.addEventListener("click", () => switchAppMode("lab"));
   }
+  if (btnTools) {
+    btnTools.addEventListener("click", () => switchAppMode("tools"));
+  }
+  if (btnAnalytics) {
+    btnAnalytics.addEventListener("click", () => switchAppMode("analytics"));
+  }
 
-  // Parse hash to see if assessment, glossary, quiz, or lab mode was requested
+  // Parse hash to see if assessment, glossary, quiz, lab, tools, or analytics mode was requested
   parseAssessmentUrlState();
 
   // Render initial assessment components
@@ -1248,6 +1256,9 @@ function initAssessmentMode() {
 }
 
 function parseAssessmentUrlState() {
+  if (typeof isUserLoggedIn === "function" && !isUserLoggedIn()) {
+    return;
+  }
   const hash = window.location.hash.replace("#", "");
   if (hash.startsWith("assessment")) {
     const parts = hash.split("?");
@@ -1265,6 +1276,10 @@ function parseAssessmentUrlState() {
     switchAppMode("quiz", false);
   } else if (hash.startsWith("lab")) {
     switchAppMode("lab", false);
+  } else if (hash.startsWith("tools")) {
+    switchAppMode("tools", false);
+  } else if (hash.startsWith("analytics")) {
+    switchAppMode("analytics", false);
   } else if (currentAppMode !== "learning") {
     switchAppMode("learning", false);
   }
@@ -1275,6 +1290,19 @@ window.addEventListener("hashchange", () => {
 });
 
 function switchAppMode(newMode, updateHash = true) {
+  const authGateway = document.getElementById("auth-gateway");
+  const appContainer = document.getElementById("app-container");
+
+  if (typeof isUserLoggedIn === "function" && !isUserLoggedIn()) {
+    currentAppMode = newMode;
+    if (authGateway) authGateway.style.display = "flex";
+    if (appContainer) appContainer.style.display = "none";
+    return;
+  }
+
+  // Ensure gateway is hidden and app is visible when authenticated
+  if (authGateway) authGateway.style.display = "none";
+  if (appContainer) appContainer.style.display = "block";
   currentAppMode = newMode;
 
   const btnLearning = document.getElementById("btn-mode-learning");
@@ -1282,21 +1310,27 @@ function switchAppMode(newMode, updateHash = true) {
   const btnGlossary = document.getElementById("btn-mode-glossary");
   const btnQuiz = document.getElementById("btn-mode-quiz");
   const btnLab = document.getElementById("btn-mode-lab");
+  const btnTools = document.getElementById("btn-mode-tools");
+  const btnAnalytics = document.getElementById("btn-mode-analytics");
 
   const learningLayout = document.getElementById("learning-layout");
   const assessmentLayout = document.getElementById("assessment-layout");
   const glossaryLayout = document.getElementById("glossary-layout");
   const quizLayout = document.getElementById("quiz-layout");
   const labLayout = document.getElementById("lab-layout");
+  const toolsLayout = document.getElementById("tools-layout");
+  const analyticsLayout = document.getElementById("analytics-layout");
 
   const learningMetrics = document.getElementById("learning-metrics");
   const assessmentMetrics = document.getElementById("assessment-metrics");
   const glossaryMetrics = document.getElementById("glossary-metrics");
   const quizMetrics = document.getElementById("quiz-metrics");
   const labMetrics = document.getElementById("lab-metrics");
+  const toolsMetrics = document.getElementById("tools-metrics");
+  const analyticsMetrics = document.getElementById("analytics-metrics");
 
   // Reset active classes
-  [btnLearning, btnAssessment, btnGlossary, btnQuiz, btnLab].forEach(btn => {
+  [btnLearning, btnAssessment, btnGlossary, btnQuiz, btnLab, btnTools, btnAnalytics].forEach(btn => {
     if (btn) {
       btn.classList.remove("active");
       btn.setAttribute("aria-selected", "false");
@@ -1309,6 +1343,8 @@ function switchAppMode(newMode, updateHash = true) {
   if (glossaryLayout) glossaryLayout.style.display = "none";
   if (quizLayout) quizLayout.style.display = "none";
   if (labLayout) labLayout.style.display = "none";
+  if (toolsLayout) toolsLayout.style.display = "none";
+  if (analyticsLayout) analyticsLayout.style.display = "none";
 
   // Hide all metrics
   if (learningMetrics) learningMetrics.style.display = "none";
@@ -1316,6 +1352,8 @@ function switchAppMode(newMode, updateHash = true) {
   if (glossaryMetrics) glossaryMetrics.style.display = "none";
   if (quizMetrics) quizMetrics.style.display = "none";
   if (labMetrics) labMetrics.style.display = "none";
+  if (toolsMetrics) toolsMetrics.style.display = "none";
+  if (analyticsMetrics) analyticsMetrics.style.display = "none";
 
   if (newMode === "learning") {
     if (btnLearning) {
@@ -1386,6 +1424,41 @@ function switchAppMode(newMode, updateHash = true) {
     if (updateHash) {
       window.location.hash = typeof currentLabAttack !== "undefined" && currentLabAttack ? `lab?attack=${currentLabAttack.id}` : "lab";
     }
+  } else if (newMode === "tools") {
+    if (btnTools) {
+      btnTools.classList.add("active");
+      btnTools.setAttribute("aria-selected", "true");
+    }
+    if (toolsLayout) toolsLayout.style.display = "block";
+    if (toolsMetrics) toolsMetrics.style.display = "flex";
+
+    if (typeof renderToolsLayout === "function") {
+      renderToolsLayout();
+    }
+
+    if (updateHash) {
+      window.location.hash = "tools";
+    }
+  } else if (newMode === "analytics") {
+    if (btnAnalytics) {
+      btnAnalytics.classList.add("active");
+      btnAnalytics.setAttribute("aria-selected", "true");
+    }
+    if (analyticsLayout) analyticsLayout.style.display = "block";
+    if (analyticsMetrics) analyticsMetrics.style.display = "flex";
+
+    if (typeof renderAnalyticsDashboard === "function") {
+      renderAnalyticsDashboard();
+    }
+
+    if (updateHash) {
+      window.location.hash = "analytics";
+    }
+  }
+
+  // Record Telemetry Page View
+  if (typeof trackPageView === "function") {
+    trackPageView(newMode);
   }
 }
 

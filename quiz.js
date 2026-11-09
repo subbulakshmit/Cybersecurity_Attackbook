@@ -1041,6 +1041,11 @@ function renderScorecardScreen(container) {
 
   const currentCatObj = QUIZ_CATEGORIES.find(c => c.id === currentQuizCategory) || QUIZ_CATEGORIES[0];
 
+  // Track telemetry quiz completion
+  if (typeof trackQuizCompletion === "function") {
+    trackQuizCompletion(currentQuizCategory, correct, total);
+  }
+
   container.innerHTML = `
     <div class="quiz-scorecard-card">
       <div class="scorecard-hero-banner">

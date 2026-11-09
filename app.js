@@ -9306,7 +9306,12 @@ function initHashRouting() {
     parseInitialUrlState();
     // Update filter pills UI
     document.querySelectorAll(".filter-pill").forEach(p => {
-      p.classList.toggle("active", p.getAttribute("data-filter") === currentFilter);
+      const match = p.getAttribute("data-filter") === currentFilter;
+      p.classList.toggle("active", match);
+      if (match) {
+        const displayEl = document.getElementById("learning-active-category-display");
+        if (displayEl) displayEl.textContent = p.textContent.trim();
+      }
     });
     // Update tab buttons UI
     document.querySelectorAll(".tab-btn").forEach(b => {
@@ -9397,24 +9402,20 @@ function initSearchAndFilters() {
 
   filterPills.forEach(pill => {
     pill.addEventListener("click", () => {
-      filterPills.forEach(p => p.classList.remove("active"));
-      pill.classList.add("active");
       currentFilter = pill.getAttribute("data-filter");
+      filterPills.forEach(p => {
+        p.classList.toggle("active", p.getAttribute("data-filter") === currentFilter);
+      });
+      const displayEl = document.getElementById("learning-active-category-display");
+      if (displayEl) displayEl.textContent = pill.textContent.trim();
       renderSidebarList();
 
       const currentStillMatches = ATTACKS_DATA.some(item => {
-        const matchesFilter = currentFilter === "all" || 
-          item.moduleGroup === currentFilter || 
-          item.category === currentFilter;
-        return matchesFilter && item.id === currentAttackId;
+        return matchesAttackFilter(item, currentFilter) && item.id === currentAttackId;
       });
 
       if (!currentStillMatches) {
-        const firstMatch = ATTACKS_DATA.find(item => 
-          currentFilter === "all" || 
-          item.moduleGroup === currentFilter || 
-          item.category === currentFilter
-        );
+        const firstMatch = ATTACKS_DATA.find(item => matchesAttackFilter(item, currentFilter));
         if (firstMatch) {
           currentAttackId = firstMatch.id;
           loadAttack(firstMatch.id);
@@ -9453,14 +9454,68 @@ function initTabNavigation() {
   });
 }
 
+function matchesAttackFilter(item, filter) {
+  if (!filter || filter === "all") return true;
+  if (filter === "password") {
+    return item.moduleGroup === "password" || item.category === "pwd-attack" || item.category === "pwd-crack";
+  }
+  if (filter === "pwd-attack") {
+    return item.category === "pwd-attack" || (item.num >= 31 && item.num <= 35);
+  }
+  if (filter === "pwd-crack") {
+    return item.category === "pwd-crack" || (item.num >= 36 && item.num <= 39);
+  }
+  return item.moduleGroup === filter || item.category === filter;
+}
+
+function renderCategoryAttacksStrip() {
+  const container = document.getElementById("category-attacks-strip");
+  const countEl = document.getElementById("category-strip-count");
+  const titleEl = document.getElementById("category-strip-title");
+  if (!container) return;
+
+  const filtered = ATTACKS_DATA.filter(item => matchesAttackFilter(item, currentFilter));
+
+  if (countEl) {
+    countEl.textContent = `${filtered.length} Attacks`;
+  }
+  if (titleEl) {
+    const activePill = document.querySelector(`.filter-pill[data-filter="${currentFilter}"]`);
+    const catName = activePill ? activePill.textContent.trim() : (currentFilter === "all" ? "All Vectors" : currentFilter.toUpperCase());
+    titleEl.textContent = currentFilter === "all" ? "All Attacks in Curriculum:" : `Attacks in ${catName}:`;
+  }
+
+  container.innerHTML = "";
+  filtered.forEach(attack => {
+    const numStr = attack.num < 10 ? `0${attack.num}` : `${attack.num}`;
+    const isActive = attack.id === currentAttackId;
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = `cat-attack-chip ${isActive ? 'active' : ''}`;
+    btn.setAttribute("data-id", attack.id);
+    btn.setAttribute("title", `Attack ${numStr}: ${attack.name}`);
+    btn.innerHTML = `
+      <span class="cat-chip-num">${numStr}</span>
+      <span class="cat-chip-name">${escapeHtml(attack.shortName)}</span>
+      <span class="severity-dot-indicator ${attack.severity}" title="Severity: ${attack.severity}"></span>
+      ${isActive ? '<span class="cat-chip-active-badge">ACTIVE</span>' : ''}
+    `;
+    btn.addEventListener("click", () => {
+      currentAttackId = attack.id;
+      loadAttack(attack.id);
+      window.location.hash = `${attack.id}?tab=${currentTab}&filter=${currentFilter}`;
+    });
+    container.appendChild(btn);
+  });
+}
+
 function renderSidebarList() {
   const listContainer = document.getElementById("attack-list");
+  if (!listContainer) return;
   listContainer.innerHTML = "";
 
   const filteredAttacks = ATTACKS_DATA.filter(item => {
-    const matchesFilter = currentFilter === "all" || 
-      item.moduleGroup === currentFilter || 
-      item.category === currentFilter;
+    const matchesFilter = matchesAttackFilter(item, currentFilter);
     const matchesSearch = searchQuery === "" || 
       item.name.toLowerCase().includes(searchQuery) ||
       item.shortName.toLowerCase().includes(searchQuery) ||
@@ -9479,6 +9534,7 @@ function renderSidebarList() {
         No attacks match your filter or search query.
       </div>
     `;
+    renderCategoryAttacksStrip();
     return;
   }
 
@@ -9510,6 +9566,8 @@ function renderSidebarList() {
 
     listContainer.appendChild(card);
   });
+
+  renderCategoryAttacksStrip();
 }
 
 function loadAttack(attackId) {
@@ -9517,9 +9575,26 @@ function loadAttack(attackId) {
   currentAttackId = attack.id;
   const numStr = attack.num < 10 ? `0${attack.num}` : `${attack.num}`;
 
+  // Log telemetry view
+  if (typeof trackAttackView === "function") {
+    trackAttackView(attack.id, attack.name);
+  }
+
   // Sync active card in sidebar
   document.querySelectorAll(".attack-card-nav").forEach(c => {
     c.classList.toggle("active", c.getAttribute("data-id") === attack.id);
+  });
+
+  // Sync active chip in category attacks strip
+  document.querySelectorAll(".cat-attack-chip").forEach(c => {
+    const isActive = c.getAttribute("data-id") === attack.id;
+    c.classList.toggle("active", isActive);
+    const existingBadge = c.querySelector(".cat-chip-active-badge");
+    if (isActive && !existingBadge) {
+      c.insertAdjacentHTML("beforeend", '<span class="cat-chip-active-badge">ACTIVE</span>');
+    } else if (!isActive && existingBadge) {
+      existingBadge.remove();
+    }
   });
 
   // Sync active tab indicator
@@ -9753,6 +9828,79 @@ function renderDefenseTab(attack) {
     `;
   }).join("");
 
+  // Get mapped FOSS tools for this threat vector
+  const fossTools = (typeof getFossToolsForAttack === "function") ? getFossToolsForAttack(attack.id) : [];
+  let fossToolsHtml = "";
+
+  if (fossTools.length > 0) {
+    const cards = fossTools.map(tool => `
+      <div class="dossier-foss-card">
+        <div class="dossier-foss-header">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="dossier-foss-name">${tool.name}</span>
+            <span class="tool-category-badge ${tool.category}">${tool.categoryLabel}</span>
+          </div>
+          <span class="dossier-foss-license">${tool.license}</span>
+        </div>
+        <div class="dossier-foss-body">
+          <div class="dossier-foss-role"><strong>Detection:</strong> ${tool.detectionRole}</div>
+          <div class="dossier-foss-role"><strong>Defense:</strong> ${tool.defenseRole}</div>
+        </div>
+        <div class="dossier-foss-footer">
+          <button class="dossier-foss-jump-btn" onclick="jumpToFossTool('${tool.id}')" title="Inspect ${tool.name} detection rules and full profile">
+            <span>Inspect Rules & Config</span>
+            <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    `).join("");
+
+    fossToolsHtml = `
+      <div class="content-card" style="margin-top: 24px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+          <h3 class="card-heading" style="margin-bottom: 0;">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Common FOSS Detection & Defense Engines (${fossTools.length} Mapped)
+          </h3>
+          <button class="view-all-foss-btn" onclick="if(typeof switchAppMode==='function'){switchAppMode('tools');}" title="Open complete FOSS tools catalog">
+            <span>Explore All FOSS Tools</span>
+            <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 16px;">
+          Free & Open-Source Software (FOSS) tools specifically equipped for intrusion detection, log analysis, and active mitigation against <strong>${escapeHtml(attack.name)}</strong>.
+        </p>
+        <div class="dossier-foss-grid">
+          ${cards}
+        </div>
+      </div>
+    `;
+  } else {
+    fossToolsHtml = `
+      <div class="content-card" style="margin-top: 24px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+          <h3 class="card-heading" style="margin-bottom: 0;">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Core FOSS Detection & Defense Stack
+          </h3>
+          <button class="view-all-foss-btn" onclick="if(typeof switchAppMode==='function'){switchAppMode('tools');}" title="Open complete FOSS tools catalog">
+            <span>Explore All FOSS Tools</span>
+            <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 16px;">
+          Protect this threat vector using standard defense-in-depth FOSS engines including <strong>Suricata</strong> (Network IDS/IPS), <strong>Wazuh</strong> (Host EDR & FIM), and <strong>Sigma</strong> (SIEM Rules).
+        </p>
+      </div>
+    `;
+  }
+
   container.innerHTML = `
     <div class="content-card">
       <h3 class="card-heading">
@@ -9777,6 +9925,7 @@ function renderDefenseTab(attack) {
         ${checklistHtml}
       </div>
     </div>
+    ${fossToolsHtml}
   `;
 
   container.querySelectorAll(".checklist-item").forEach(itemEl => {

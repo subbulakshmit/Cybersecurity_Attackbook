@@ -25,13 +25,209 @@
 </script>
 
 <body class="dark-theme">
+  <!-- FULL PAGE SOC ACCESS GATEWAY (Mandatory Authentication Lock) -->
+  <div class="auth-gateway-screen" id="auth-gateway">
+    <div class="auth-gateway-card" id="auth-modal-card">
+      <div class="auth-gateway-header">
+        <div class="auth-shield-icon large">
+          <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" fill="none" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <circle cx="12" cy="11" r="3"></circle>
+            <path d="M7 18.5c0-2.5 2.2-4.5 5-4.5s5 2 5 4.5"></path>
+          </svg>
+        </div>
+        <span class="auth-classification-tag">RESTRICTED SECURITY CONSOLE &bull; AUTHENTICATION REQUIRED</span>
+        <h2 class="auth-gateway-title" id="auth-modal-title">CYBER ATTACK BOOK</h2>
+        <p class="auth-gateway-subtitle">
+          Sign in with your defender credentials or register a new analyst profile to access threat intelligence dossiers, interactive labs, and incident response assessments.
+        </p>
+      </div>
+
+      <!-- Auth Tab Switcher -->
+      <div class="auth-tabs-row" role="tablist">
+        <button class="auth-tab-btn active" id="tab-btn-signin" onclick="switchAuthTab('signin')" role="tab" aria-selected="true">Sign In</button>
+        <button class="auth-tab-btn" id="tab-btn-signup" onclick="switchAuthTab('signup')" role="tab" aria-selected="false">Create Account (Sign Up)</button>
+      </div>
+
+      <!-- Error / Success Alert Box -->
+      <div class="auth-alert-box" id="auth-alert-box" style="display: none;"></div>
+
+      <!-- Sign In Form -->
+      <div class="auth-form" id="form-signin">
+        <div class="auth-input-group">
+          <label for="signin-username">Username</label>
+          <div class="auth-input-wrapper">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <input type="text" id="signin-username" placeholder="Enter username" autocomplete="username" onkeydown="if(event.key==='Enter'){event.preventDefault(); handleSignInSubmit();}">
+          </div>
+        </div>
+
+        <div class="auth-input-group">
+          <label for="signin-password">Password</label>
+          <div class="auth-input-wrapper">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <input type="password" id="signin-password" class="has-toggle" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter'){event.preventDefault(); handleSignInSubmit();}">
+            <button type="button" class="password-toggle-btn" id="toggle-signin-password" onclick="togglePasswordVisibility('signin-password', 'toggle-signin-password')" title="Toggle password visibility" aria-label="Toggle password visibility">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="auth-helper-row">
+          <button type="button" class="auth-link-btn" onclick="handleForgotPassword()">Forgot Password?</button>
+        </div>
+
+        <div class="auth-btn-row">
+          <button type="button" class="auth-submit-btn" id="btn-submit-signin" onclick="handleSignInSubmit()">
+            <span>Sign In to Console</span>
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Sign Up Form -->
+      <div class="auth-form" id="form-signup" style="display: none;">
+        <div class="auth-input-group">
+          <label for="signup-name">Full Name / Display Name</label>
+          <div class="auth-input-wrapper">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <input type="text" id="signup-name" placeholder="e.g. Alex Vance" onkeydown="if(event.key==='Enter'){event.preventDefault(); handleSignUpSubmit();}">
+          </div>
+        </div>
+
+        <div class="auth-input-group">
+          <label for="signup-username">Username</label>
+          <div class="auth-input-wrapper">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"></path>
+            </svg>
+            <input type="text" id="signup-username" placeholder="Choose a unique username (min 3 chars)" autocomplete="username" onkeydown="if(event.key==='Enter'){event.preventDefault(); handleSignUpSubmit();}">
+          </div>
+        </div>
+
+        <div class="auth-input-group">
+          <label for="signup-role">Operational Role</label>
+          <div class="auth-input-wrapper">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+            <select id="signup-role">
+              <option value="SOC Analyst">SOC Analyst (Level 1 / Level 2)</option>
+              <option value="Threat Hunter">Threat Hunter / Intel Specialist</option>
+              <option value="Incident Responder">Incident Responder (DFIR)</option>
+              <option value="Security Researcher">Security Researcher / Pentester</option>
+              <option value="SOC Administrator">SOC Administrator / Lead</option>
+              <option value="Cyber Cadet">Student / Cyber Defense Cadet</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="auth-input-group">
+          <label for="signup-password">Password</label>
+          <div class="auth-input-wrapper">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <input type="password" id="signup-password" class="has-toggle" placeholder="Enter password (min 3 chars)" autocomplete="new-password" onkeydown="if(event.key==='Enter'){event.preventDefault(); handleSignUpSubmit();}">
+            <button type="button" class="password-toggle-btn" id="toggle-signup-password" onclick="togglePasswordVisibility('signup-password', 'toggle-signup-password')" title="Toggle password visibility" aria-label="Toggle password visibility">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="auth-input-group">
+          <label for="signup-confirm-password">Confirm Password</label>
+          <div class="auth-input-wrapper">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <input type="password" id="signup-confirm-password" class="has-toggle" placeholder="Re-enter password" autocomplete="new-password" onkeydown="if(event.key==='Enter'){event.preventDefault(); handleSignUpSubmit();}">
+            <button type="button" class="password-toggle-btn" id="toggle-signup-confirm-password" onclick="togglePasswordVisibility('signup-confirm-password', 'toggle-signup-confirm-password')" title="Toggle password visibility" aria-label="Toggle password visibility">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="auth-btn-row">
+          <button type="button" class="auth-submit-btn signup" id="btn-submit-signup" onclick="handleSignUpSubmit()">
+            <span>Create Account & Log In</span>
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="8.5" cy="7" r="4"></circle>
+              <line x1="20" y1="8" x2="20" y2="14"></line>
+              <line x1="23" y1="11" x2="17" y2="11"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Forgot Password Modal -->
+      <div id="auth-forgot-modal" class="auth-forgot-modal" style="display: none;">
+        <div class="auth-forgot-card">
+          <div class="auth-forgot-header">
+            <h4>Account Password Recovery</h4>
+            <button type="button" class="auth-forgot-close" onclick="closeForgotModal()">&times;</button>
+          </div>
+          <div class="auth-forgot-body">
+            <p class="auth-forgot-desc">
+              To reset your user password, enter your registered username and desired new password below.
+            </p>
+
+            <div class="auth-reset-fields" style="margin-top: 14px;">
+              <div class="auth-input-group" style="margin-bottom: 8px;">
+                <label for="forgot-username">Registered Username</label>
+                <div class="auth-input-wrapper">
+                  <input type="text" id="forgot-username" placeholder="Enter username to reset">
+                </div>
+              </div>
+              <div class="auth-input-group" style="margin-bottom: 12px;">
+                <label for="forgot-new-password">New Password</label>
+                <div class="auth-input-wrapper">
+                  <input type="password" id="forgot-new-password" placeholder="New password (min 3 chars)">
+                </div>
+              </div>
+              <button type="button" class="auth-submit-btn" style="padding: 9px 14px;" onclick="handleResetPasswordSubmit()">
+                Update Password & Auto-Fill
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN APPLICATION CONTAINER (Protected by SOC Authentication Gateway) -->
+  <div class="app-main-wrapper" id="app-container" style="display: none;">
   <!-- Top Global Navigation Bar -->
   <header class="top-nav">
-    <!-- First Line: Main Title in Center -->
-    <div class="top-nav-line-1">
-      <div class="brand-title-center">
+    <!-- Brand Title Row: CYBER ATTACK BOOK (Bigger Font, Centered) -->
+    <div class="top-nav-brand-row">
+      <div class="brand-title-center" onclick="if(typeof switchAppMode==='function'){switchAppMode('learning');}" title="CYBER ATTACK BOOK - Return to Home">
         <div class="brand-shield">
-          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"
+          <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"
             stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
             <path d="M9 12l2 2 4-4" />
@@ -41,143 +237,147 @@
       </div>
     </div>
 
-    <!-- Second Line: Rest All in Second Line -->
-
-
-    <!-- Central Mode Switcher (5 High-Visibility Operating Modes) -->
-    <div class="mode-switch-wrapper" role="tablist" aria-label="Operating Mode Selection">
-      <button class="mode-toggle-btn active" id="btn-mode-learning" role="tab" aria-selected="true"
-        data-mode="learning">
-        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2">
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-        </svg>
-        <span>Learning</span>
-        <span class="mode-badge-count" id="mode-learning-count">95 Vectors</span>
-      </button>
-      <button class="mode-toggle-btn" id="btn-mode-assessment" role="tab" aria-selected="false" data-mode="assessment">
-        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-          <polyline points="12 8 12 12 15 15" />
-        </svg>
-        <span>Assessment</span>
-        <span class="mode-badge-action" id="mode-assessment-count">10 Scenarios</span>
-      </button>
-      <button class="mode-toggle-btn" id="btn-mode-glossary" role="tab" aria-selected="false" data-mode="glossary">
-        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2">
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-        </svg>
-        <span>Glossary</span>
-        <span class="mode-badge-count" id="glossary-term-badge">131 Terms</span>
-      </button>
-      <button class="mode-toggle-btn" id="btn-mode-quiz" role="tab" aria-selected="false" data-mode="quiz">
-        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2">
-          <circle cx="12" cy="12" r="10"></circle>
-          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-          <line x1="12" y1="17" x2="12.01" y2="17"></line>
-        </svg>
-        <span>MCQ Quiz</span>
-        <span class="mode-badge-action" id="mode-quiz-count">10 MCQs</span>
-      </button>
-      <button class="mode-toggle-btn" id="btn-mode-lab" role="tab" aria-selected="false" data-mode="lab">
-        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2">
-          <polyline points="4 17 10 11 4 5"></polyline>
-          <line x1="12" y1="19" x2="20" y2="19"></line>
-        </svg>
-        <span>Attack Lab</span>
-        <span class="mode-badge-lab" id="mode-lab-count">40 Labs</span>
-      </button>
-    </div>
-
-    <!-- Right-Hand Threat Search & Command Controls -->
-    <div class="nav-right-section">
-      <!-- Universal Attack Search Bar on right side after title bar -->
-      <div class="nav-search-bar" id="nav-search-wrapper">
-        <svg class="nav-search-icon" viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2"
-          fill="none">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-        <input type="text" id="top-search-input" placeholder="Search 95 vectors (SSRF, SQLi, T1190)..."
-          autocomplete="off" spellcheck="false">
-        <button id="top-clear-search-btn" class="nav-clear-btn" aria-label="Clear Search"
-          style="display: none;">&times;</button>
-        <span class="nav-search-shortcut" title="Press / to focus">/</span>
-      </div>
-
-      <!-- Mode-Specific Quick Metrics (Neat & Clean) -->
-      <div class="nav-metrics" id="learning-metrics">
-        <div class="metric-pill live-indicator">
-          <span class="pulse-dot"></span>
-          <span>DEFCON 2</span>
-        </div>
-        <div class="metric-pill">
-          <span class="metric-label">VECTORS:</span>
-          <span class="metric-val highlight" id="total-attacks-count">95</span>
-        </div>
-        <div class="metric-pill">
-          <span class="metric-label">READINESS:</span>
-          <span class="metric-val highlight" id="global-readiness-val">0%</span>
-        </div>
-      </div>
-
-      <!-- Assessment Mode Top Metrics -->
-      <div class="nav-metrics" id="assessment-metrics" style="display: none;">
-        <button class="nav-portfolio-btn" id="btn-nav-portfolio-scorecard"
-          title="Open Enterprise Defense Portfolio Audit">
-          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
+    <!-- First Line: Only 7 Section Titles in Center -->
+    <div class="top-nav-line-1">
+      <div class="mode-switch-wrapper" role="tablist" aria-label="Operating Mode Selection">
+        <button class="mode-toggle-btn active" id="btn-mode-learning" role="tab" aria-selected="true" data-mode="learning">
+          <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
           </svg>
-          <span>Portfolio Audit</span>
+          <span>Learning</span>
         </button>
-        <div class="metric-pill">
-          <span class="metric-label">SCENARIO:</span>
-          <span class="metric-val highlight" id="nav-assessment-remaining-budget">$120,000</span>
-        </div>
-        <div class="metric-pill">
-          <span class="metric-label">ENTERPRISE:</span>
-          <span class="metric-val highlight" id="nav-portfolio-score-pill">0/100</span>
-        </div>
-      </div>
-
-      <!-- Glossary Mode Top Metrics -->
-      <div class="nav-metrics" id="glossary-metrics" style="display: none;">
-        <div class="metric-pill">
-          <span class="metric-label">TERMS:</span>
-          <span class="metric-val highlight" id="glossary-term-count">131 Terms</span>
-        </div>
-      </div>
-
-      <!-- Quiz Mode Top Metrics -->
-      <div class="nav-metrics" id="quiz-metrics" style="display: none;">
-        <div class="metric-pill">
-          <span class="metric-label">CATEGORY:</span>
-          <span class="metric-val highlight" id="nav-quiz-category-label">All Vectors</span>
-        </div>
-        <div class="metric-pill">
-          <span class="metric-label">SCORE:</span>
-          <span class="metric-val highlight" id="nav-quiz-score-pill">0 / 10</span>
-        </div>
-      </div>
-
-      <!-- Attack Lab Mode Top Metrics -->
-      <div class="nav-metrics" id="lab-metrics" style="display: none;">
-        <div class="metric-pill live-indicator">
-          <span class="pulse-dot"></span>
-          <span>LIVE SOC SIM</span>
-        </div>
-        <div class="metric-pill">
-          <span class="metric-label">LABS:</span>
-          <span class="metric-val highlight" id="nav-lab-count">40 Sims</span>
-        </div>
-        <div class="metric-pill">
-          <span class="metric-label">ACTORS:</span>
-          <span class="metric-val highlight">Attacker · Target · Snort</span>
-        </div>
+        <button class="mode-toggle-btn" id="btn-mode-assessment" role="tab" aria-selected="false" data-mode="assessment">
+          <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            <polyline points="12 8 12 12 15 15" />
+          </svg>
+          <span>Assessment</span>
+        </button>
+        <button class="mode-toggle-btn" id="btn-mode-glossary" role="tab" aria-selected="false" data-mode="glossary">
+          <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+          </svg>
+          <span>Glossary</span>
+        </button>
+        <button class="mode-toggle-btn" id="btn-mode-quiz" role="tab" aria-selected="false" data-mode="quiz">
+          <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          <span>MCQ</span>
+        </button>
+        <button class="mode-toggle-btn" id="btn-mode-lab" role="tab" aria-selected="false" data-mode="lab">
+          <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2">
+            <polyline points="4 17 10 11 4 5"></polyline>
+            <line x1="12" y1="19" x2="20" y2="19"></line>
+          </svg>
+          <span>Attack Lab</span>
+        </button>
+        <button class="mode-toggle-btn" id="btn-mode-tools" role="tab" aria-selected="false" data-mode="tools">
+          <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+          </svg>
+          <span>FOSS Tools</span>
+        </button>
+        <button class="mode-toggle-btn" id="btn-mode-analytics" role="tab" aria-selected="false" data-mode="analytics">
+          <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+          <span>Analytics</span>
+        </button>
       </div>
     </div>
+
+    <!-- Second Line: Search and Views in Center, Auth on Right -->
+    <div class="top-nav-line-2">
+      <!-- Left spacer / balance container with hidden elements for script compatibility -->
+      <div class="top-nav-line-2-left">
+        <div style="display: none !important;" aria-hidden="true">
+          <div id="learning-metrics"><span id="total-attacks-count">95</span><span id="global-readiness-val">0%</span></div>
+          <div id="assessment-metrics"><button id="btn-nav-portfolio-scorecard"></button><span id="nav-assessment-remaining-budget"></span><span id="nav-portfolio-score-pill"></span></div>
+          <div id="glossary-metrics"><span id="glossary-term-count"></span></div>
+          <div id="quiz-metrics"><span id="nav-quiz-category-label"></span><span id="nav-quiz-score-pill"></span></div>
+          <div id="lab-metrics"><span id="nav-lab-count"></span></div>
+          <div id="tools-metrics"><span id="tools-count-pill"></span></div>
+          <div id="analytics-metrics"></div>
+        </div>
+      </div>
+
+      <!-- Center: Universal Attack Search and Views Metric -->
+      <div class="top-nav-center-group">
+        <div class="nav-search-bar" id="nav-search-wrapper">
+          <svg class="nav-search-icon" viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2"
+            fill="none">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="top-search-input" placeholder="Search 95 vectors (SSRF, SQLi, T1190)..."
+            autocomplete="off" spellcheck="false">
+          <button id="top-clear-search-btn" class="nav-clear-btn" aria-label="Clear Search"
+            style="display: none;">&times;</button>
+          <span class="nav-search-shortcut" title="Press / to focus">/</span>
+        </div>
+
+        <!-- Views Metric Pill (Always visible, centered next to search) -->
+        <div class="nav-views-pill" id="nav-views-pill" onclick="if(typeof switchAppMode==='function'){switchAppMode('analytics');}" title="View Platform Views & Analytics">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <span class="nav-views-label">VIEWS:</span>
+          <span class="nav-views-val highlight" id="nav-analytics-views-count">0 Views</span>
+        </div>
+      </div>
+
+      <!-- Right: User Authentication Controls -->
+      <div class="top-nav-line-2-right">
+        <div class="nav-auth-section" id="nav-auth-section">
+          <!-- Logged Out View -->
+          <div class="auth-guest-view" id="auth-guest-view">
+            <button class="nav-auth-btn signin-btn" id="btn-open-signin" onclick="openAuthModal('signin')" title="Sign in to your SOC account">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                <polyline points="10 17 15 12 10 7"></polyline>
+                <line x1="15" y1="12" x2="3" y2="12"></line>
+              </svg>
+              <span>Sign In</span>
+            </button>
+            <button class="nav-auth-btn signup-btn" id="btn-open-signup" onclick="openAuthModal('signup')" title="Create a new SOC Analyst account">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="8.5" cy="7" r="4"></circle>
+                <line x1="20" y1="8" x2="20" y2="14"></line>
+                <line x1="23" y1="11" x2="17" y2="11"></line>
+              </svg>
+              <span>Sign Up</span>
+            </button>
+          </div>
+
+          <!-- Logged In View -->
+          <div class="auth-user-view" id="auth-user-view" style="display: none;">
+            <div class="user-profile-badge" id="btn-user-profile" onclick="if(typeof switchAppMode==='function'){switchAppMode('analytics');}" title="View Active Session / Open Analytics">
+              <span class="user-avatar-initial" id="user-avatar-initial">A</span>
+              <div class="user-meta-info">
+                <span class="user-display-name" id="user-display-name">Admin</span>
+                <span class="user-role-tag" id="user-role-tag">SOC Admin</span>
+              </div>
+            </div>
+            <button class="nav-auth-btn logout-btn" id="btn-auth-logout" onclick="handleUserLogout()" title="Sign out of console">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+              <span>Sign Out</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -195,6 +395,10 @@
         <input type="text" id="search-input" placeholder="Filter 95 attacks (name, MITRE, target)..."
           autocomplete="off">
         <button id="clear-search-btn" class="clear-btn" aria-label="Clear Search">&times;</button>
+      </div>
+
+      <div class="sidebar-filter-header">
+        <span class="sidebar-filter-label">Filter by Category</span>
       </div>
 
       <div class="filter-pills">
@@ -236,6 +440,51 @@
 
     <!-- Main Content Area: Attack Dossier -->
     <main class="content-panel" id="main-content">
+      <!-- Category Filter Bar (Prominently Visible in Learning Mode) -->
+      <div class="learning-category-toolbar" id="learning-category-toolbar">
+        <div class="learning-category-toolbar-head">
+          <div class="learning-category-toolbar-title">
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+            </svg>
+            <span>ATTACK CATEGORIES:</span>
+          </div>
+          <span class="learning-active-cat-name" id="learning-active-category-display">All Vectors (95)</span>
+        </div>
+        <div class="learning-category-pills-wrap" role="toolbar" aria-label="Learning Mode Category Filter">
+          <button class="filter-pill active" data-filter="all">All (95)</button>
+          <button class="filter-pill" data-filter="network">Network (01–05)</button>
+          <button class="filter-pill" data-filter="os">Core OS (06–10)</button>
+          <button class="filter-pill" data-filter="app">App / Web (11–15)</button>
+          <button class="filter-pill" data-filter="pwd-attack">Password (31–35)</button>
+          <button class="filter-pill" data-filter="pwd-crack">Cracking (36–39)</button>
+          <button class="filter-pill" data-filter="wireless">Wireless (40–44)</button>
+          <button class="filter-pill" data-filter="rogue">Rogue AP (45–49)</button>
+          <button class="filter-pill" data-filter="mac">MAC / L2 (50–54)</button>
+          <button class="filter-pill" data-filter="mobile">Mobile (55–59)</button>
+          <button class="filter-pill" data-filter="iot">IoT (60–64)</button>
+          <button class="filter-pill" data-filter="windows">Windows (65–69)</button>
+          <button class="filter-pill" data-filter="linux">Linux (70–74)</button>
+          <button class="filter-pill" data-filter="macos">macOS (75–79)</button>
+          <button class="filter-pill" data-filter="os-spec">OS Specialized (80–83)</button>
+          <button class="filter-pill" data-filter="owasp">OWASP Top 10 (84–93)</button>
+          <button class="filter-pill" data-filter="other-web">Other Web (94–100)</button>
+          <button class="filter-pill" data-filter="database">Database (101–105)</button>
+          <button class="filter-pill" data-filter="storage">Storage Security (106–110)</button>
+        </div>
+
+        <!-- Dynamic Category Attacks Strip: Visible once category is selected -->
+        <div class="category-attacks-strip-container" id="category-attacks-strip-container">
+          <div class="category-strip-header">
+            <span class="category-strip-title" id="category-strip-title">Attacks in this Category:</span>
+            <span class="category-strip-count" id="category-strip-count">95 Attacks</span>
+          </div>
+          <div class="category-attacks-strip" id="category-attacks-strip" role="group" aria-label="Attacks in selected category">
+            <!-- Populated via renderCategoryAttacksStrip in app.js -->
+          </div>
+        </div>
+      </div>
+
       <!-- Active Attack Header -->
       <section class="dossier-header" id="dossier-header">
         <!-- Rendered via app.js -->
@@ -652,6 +901,48 @@
     </footer>
   </div>
 
+  <!-- ========================================================================= -->
+  <!-- 6. FOSS TOOLS SECTION (Open-Source Threat Detection & Defense Engines)    -->
+  <!-- ========================================================================= -->
+  <div class="tools-layout" id="tools-layout" style="display: none;">
+    <!-- Rendered via tools.js -->
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 7. ANALYTICS & SOC TELEMETRY DASHBOARD LAYOUT                             -->
+  <!-- ========================================================================= -->
+  <div class="analytics-layout" id="analytics-layout" style="display: none;">
+    <div class="analytics-hero">
+      <div class="analytics-hero-left">
+        <div class="analytics-hero-badge">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          <span>ENTERPRISE SOC TELEMETRY BUS</span>
+        </div>
+        <h2 class="analytics-hero-title">Platform Telemetry & Threat Analytics</h2>
+        <p class="analytics-hero-subtitle">
+          Real-time activity metrics, threat consultation distributions, quiz performance benchmarks, and live SOC event streaming across all platform modules.
+        </p>
+      </div>
+      <div class="analytics-hero-right">
+        <button class="analytics-action-hero-btn" onclick="exportAnalyticsJSON()">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Export JSON Telemetry</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Analytics Dynamic Workspace Container -->
+    <div class="analytics-workspace" id="analytics-workspace-container">
+      <!-- Rendered via analytics.js -->
+    </div>
+  </div>
+
   <!-- Assessment Scorecard Modal -->
   <div class="modal-overlay" id="assessment-modal" role="dialog" aria-modal="true"
     aria-labelledby="assessment-modal-title">
@@ -668,6 +959,9 @@
     </div>
   </div>
 
+  </div>
+  <!-- /app-main-wrapper (Protected Application Container) -->
+
   <!-- Toast Notification for Copy Actions -->
   <div id="toast" class="toast" role="alert" aria-live="polite">
     <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2">
@@ -676,11 +970,13 @@
     <span id="toast-text">Rule copied to clipboard!</span>
   </div>
 
+  <script src="analytics.js"></script>
   <script src="app.js"></script>
   <script src="assessment.js"></script>
   <script src="glossary.js"></script>
   <script src="quiz.js"></script>
   <script src="lab.js"></script>
+  <script src="tools.js"></script>
 </body>
 
 </html>
